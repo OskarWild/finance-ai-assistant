@@ -1,0 +1,17 @@
+[project]
+name = "financing"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "matplotlib>=3.10.3",
+    "plotly>=6.2.0",
+    "python-dotenv>=1.1.1",
+    "seaborn>=0.13.2",
+]
+
+[tool.uv.workspace]
+members = [
+    "demouv",
+]

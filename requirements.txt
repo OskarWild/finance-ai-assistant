@@ -1,0 +1,48 @@
+# Core
+pandas
+dotenv
+matplotlib
+plotly
+seaborn
+
+# LangChain + Ollama
+langchain
+langchain_ollama
+langchain_community
+langchain_core
+ipykernel
+
+# Milvus
+pymilvus
+
+# Output parsing
+pydantic
+
+# Frontend
+streamlit
+
+# ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+
+# flask
+# dotenv
+# langdetect
+# langchain
+# langchainhub
+# ollama
+# uvicorn
+# fastapi
+# langchain_ollama
+# langchain_community
+# langchain_core
+# pymilvus
+# python-docx
+# typing_extensions
+# requests
+# streamlit
+# pypdf
+# fastmcp
+# langgraph
+# langchain_mcp_adapters
+# flask[async]
+# asyncio
+# ipykernel

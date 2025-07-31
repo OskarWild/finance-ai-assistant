@@ -1,0 +1,8 @@
+ragapp.py
+venv/
+.env
+Tasks.txt
+uv.lock
+terminal.txt
+.python-version
+plot.py
