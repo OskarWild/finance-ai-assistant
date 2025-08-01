@@ -25,7 +25,6 @@ load_dotenv()
 # Environmental variables passing
 OLLAMA_EMBED_MODEL = os.environ.get("OLLAMA_EMBED_MODEL")
 OLLAMA_CHAT_MODEL = os.environ.get("OLLAMA_CHAT_MODEL")
-LLAMA_EMBED_MODEL = os.environ.get("OLLAMA_EMBED_MODEL")
 MILVUS_TOKEN = os.environ.get("MILVUS_TOKEN")
 MILVUS_URI = os.environ.get("MILVUS_URI")
 COLLECTION_NAME = "finance_reports"
@@ -58,6 +57,9 @@ def plot_summary(df):
     st.subheader("Data Overview & Visualizations")
     st.write("Raw Table Snapshot:")
     st.dataframe(df.head(10))
+
+    st.write("Statistics")
+    st.write(df.describe())
 
     numeric_cols = df.select_dtypes(include=["number"]).columns.tolist()
     if not numeric_cols:
@@ -101,6 +103,21 @@ def load_report(file_path):
     except Exception as e:
         print(f"Error reading {file_path}: {e}")
         return None
+
+def upload():
+    uploaded_file = st.file_uploader("📁 Upload your financial report (.csv or .xlsx)", type=["csv", "xlsx"])
+
+    if uploaded_file is not None:
+        try:
+            if uploaded_file.name.endswith(".csv"):
+                df = pd.read_csv(uploaded_file)
+            else:
+                df = pd.read_excel(uploaded_file)
+            return df, uploaded_file.name
+        except Exception as e:
+            st.error(f"Failed to load the file: {e}")
+            return None, None
+    return None, None
 
 # Extracting text from the dataframe
 def dataframe_to_text(df, filename=None):
@@ -153,12 +170,18 @@ def log_to_history(filename, report):
         f.write(json.dumps(record, ensure_ascii=False) + "\n")
 
 def main():
-    folder_path = "./data"
-    filename = "Detailed_Financial_Report.csv"
-    file_path = os.path.join(folder_path, filename)
-    reports = load_reports_from_folder(folder_path)
 
-    df = load_report(file_path) 
+    df, filename = upload()
+
+    if df is None or filename is None:
+        st.info("Please upload a financial report file to continue.")
+        return
+
+    # folder_path = "./data"
+    # filename = "Detailed_Financial_Report.csv"
+    # file_path = os.path.join(folder_path, filename)
+    # reports = load_reports_from_folder(folder_path)
+    # df = load_report(file_path) 
 
     if df is None:
         st.error(f"Failed to load {filename}")
@@ -172,7 +195,18 @@ def main():
     user_query = st.text_input("Write you query for the assistant")
     user_query_1 = "Summarize the key financial metrics and trends in 5 bullet points."
     user_query_2 = "Name the headers and for each one, show their maximum values"
+    
+    # Query history
+    if user_query:
+        if "query_history" not in st.session_state:
+            st.session_state.query_history = []
+        st.session_state.query_history.append(user_query)
 
+    st.sidebar.subheader("Query History")
+    if "query_history" in st.session_state:
+        for q in st.session_state.query_history[-5:][::-1]:
+            st.sidebar.write(f"→ {q}")
+    
     if user_query:
         print("\nGot your query!")
 
@@ -192,6 +226,11 @@ def main():
 
         st.success("Report processed and stored.")
         st.session_state.processed = True
+    
+        end_of_the_Session = {"-"*140 : "DONE!"}
+        with open(HISTORY_PATH, "a", encoding="utf-8") as f:
+            f.write(json.dumps(end_of_the_Session, ensure_ascii=False) + "\n")
+        return
 
 if __name__ == "__main__":
     main()

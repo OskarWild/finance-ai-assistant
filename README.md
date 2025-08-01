@@ -14,3 +14,6 @@ if possible, it can be viewed in Fronted like streamlit or a Flask app
 6. Saving history in the json file
 7. Showing it within basic Frontend
 8. Visualizing the data withing graphs
+
+(Here I thought we don't need RAG because splitting the table data into the chunks 
+will negativelly influence understanding of the data by the model)
