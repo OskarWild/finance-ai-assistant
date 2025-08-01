@@ -13,6 +13,13 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
+# MCP and AI Agent
+from langchain.tools.render import render_text_description
+from langgraph.prebuilt.chat_agent_executor import StructuredResponse
+from langchain_mcp_adapters.client import MultiServerMCPClient
+from langchain_mcp_adapters.tools import MCPTool
+from langgraph.prebuilt import create_react_agent
+
 load_dotenv()
 
 # Environmental variables passing
@@ -191,7 +198,7 @@ if __name__ == "__main__":
 
 
 
-# streamlit run app.py9
+# streamlit run app.py
 # What are the top 3 years for metrics
 
 

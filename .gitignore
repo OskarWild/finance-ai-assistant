@@ -6,3 +6,6 @@ uv.lock
 terminal.txt
 .python-version
 plot.py
+testClient.py
+testServers.py
+jira_server.py
